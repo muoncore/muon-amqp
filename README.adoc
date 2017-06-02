@@ -85,16 +85,22 @@ To use this, import Muon and the transport
 
 ```
 npm install --save muon-core@next
-
-//TODO
-
+npm install --save muon-amqp@next
 ```
 
-Then, create a Muon instance and RS client
+Then, create a Muon instance
 
 *index.js*
 [source, javascript]
 ----
+
+var Muon = require("muon-core")
+
+require("muon-amqp").attach(Muon)
+
+var muon = Muon.create("amqp://localhost")
+
+// ... attach a stack, interact with other services, etc.
 
 
 ----
