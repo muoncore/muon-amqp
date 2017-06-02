@@ -77,13 +77,13 @@ muon discover
 
 ## Node.js
 
-Currently, only the the RS client stack is implemented in JavaScript.
-
-To use this, import Muon and the stack
+To use this, import Muon and the transport
 
 ```
 npm install --save muon-core@next
-npm install --save muon-stack-reactive-streams@next
+
+//TODO
+
 ```
 
 Then, create a Muon instance and RS client
@@ -91,39 +91,10 @@ Then, create a Muon instance and RS client
 *index.js*
 [source, javascript]
 ----
-var Muon = require("muon-core")
 
-var muonurl = process.env.MUON_URL || "amqp://muon:microservices@localhost"
-
-var muon = Muon.create("hello-world-node", muonurl);           <1>
-
-require("muon-stack-reactive-streams").create(muon)            <2>
-
-muon.subscribe("stream://hello-world-jvm/ticktock",{},         <3>
-    function(data) {
-        console.dir("Data..." + JSON.stringify(data))
-    },
-    function(error) {
-        console.dir(error)
-    },
-    function() {
-        logger.warn("Stream Completed")
-    }
-)
 
 ----
-<1> Create a new Muon instance, connecting to a local AMQP broker for discovery and transport
-<2> Add the reactive streams stack.
-<3> Use the added `susbcribe` method to subscribe to the given endpoint.
 
-The above API maps the various RS signals onto javascript callback functions. It internally manages back pressure signalling.
+## Getting involved/ adding to this transport
 
-## Getting involved/ adding to this stack.
-
-Additions and extensions to this stack are very welcome.
-
-Particularly of interest are :-
-
-* Added language support
-* Adding the javascript server stack
-* Integrate with javascript FRP libraries.
+Additions and extensions to this stack are very welcome. Add issues and PRs to the repo.
