@@ -6,10 +6,13 @@ Muon is a set of libraries and services that let you build highly effective dist
 
 Muon is structured as a set of libraries, known as `muon-core` that give a set of infrastructure for building messaging systems. These are available in multiple languages and handle the concerns of discovery, transport, encoding and managing failures. On top of these, the exact messaging semantics that you want to express are built. These are built as a "stack", a set of channels, agents and finally a user facing API that you will use in your application code. These messages need to be transferred between your services to enable them to communicate. A Muon Transport enables this communication by giving a standard bidirectional channel like interface between them that they can exchange messages over
 
+Muon can have multiple transports active at the same time, and chooses the most appropriate one to use to connect to the remote system. Connections to remote systems are fully multiplexed/ pipelined, giving the lowest latency and performance while also conserving system resources.
+
 ## What is a Muon Discovery?
 
+Muon is a system for building Microservices. In a Microservice system, things move, services change. In Muon, the system that supports finding where the thing you are looking for is the `Discovery`. This is used by Muon to lookup the current location of a give service and identify what transport should be used to connect to it.
 
-
+Muon can have multiple discoveries active at the same time, and combines the information they provide to give a full view of the system.
 
 ## What is AMQP?
 
