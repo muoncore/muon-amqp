@@ -1,0 +1,3 @@
+rootProject.name="transport-amqp"
+
+include "transport-amqp"
