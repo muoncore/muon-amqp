@@ -1,0 +1,129 @@
+# AMQP Muon Transport
+
+## What is a Muon Transport?
+
+Muon is a set of libraries and services that let you build highly effective distributed systems that are message and event oriented.
+
+Muon is structured as a set of libraries, known as `muon-core` that give a set of infrastructure for building messaging systems. These are available in multiple languages and handle the concerns of discovery, transport, encoding and managing failures. On top of these, the exact messaging semantics that you want to express are built. These are built as a "stack", a set of channels, agents and finally a user facing API that you will use in your application code. These messages need to be transferred between your services to enable them to communicate. A Muon Transport enables this communication by giving a standard bidirectional channel like interface between them that they can exchange messages over
+
+## What is AMQP?
+
+AMQP is a wire standardised messaging protocol that is widely implemented across the industry. We use RabbitMQ in our testing.
+
+## JVM
+
+To use the transport in Java, first import Muon and the transport. Here, we include the AMQP transport, along with a discovery and a simple messaging stack (RPC) so you have an API to work with.
+
+*build.gradle*
+[source, groovy]
+----
+repositories {
+    jcenter()
+    maven { url 'https://simplicityitself.artifactoryonline.com/simplicityitself/muon' }
+    maven { url 'https://simplicityitself.artifactoryonline.com/simplicityitself/muon-snapshot' }
+}
+
+dependencies {
+    compile "io.muoncore:muon-core:$muonVersion"
+    compile "io.muoncore:muon-transport-amqp:0.0.1-SNAPSHOT"
+    compile "io.muoncore:muon-discovery-amqp:0.0.1-SNAPSHOT"
+}
+----
+
+### Create a Muon connected using AMQP
+
+This stack allows you to expose an existing RS `Publisher` so that it can be subscribed to remotely, and exchange all the signals defined for Reactive Streams (including most importantly, the back pressure signals)
+
+First then, you need to be able to obtain a Publisher. If you don't have one already, use a FRP system of some kind to make one. Consider using Spring Reactor, Akka Streams or RxJava, amongst others.
+
+Once you have a Publisher, you can use Muon to network it.
+
+[source, java]
+----
+
+AutoConfiguration config = MuonConfigBuilder.withServiceIdentifier("my-service").withTags("awesome") <1>
+                .addWriter(c -> {
+                    c.getProperties().setProperty(
+                            "muon.transport.factories",
+                            "io.muoncore.transport.amqp.AmqpMuonTransportFactory");                  <2>
+
+                    c.getProperties().put("amqp.transport.url", "amqp://muon:microservices@localhost");
+
+                    c.getProperties().setProperty(
+                            "muon.discovery.factories",
+                            "io.muoncore.discovery.amqp.AmqpDiscoveryFactory");                      <3>
+
+                    c.getProperties().put("amqp.discovery.url", "amqp://muon:microservices@localhost");
+                }).build();
+
+Muon muon = MuonBuilder
+        .withConfig(config).build();          <4>
+
+//... add a stack to the muon.
+
+----
+<1> Create a new config
+<2> Set the discovery to be AMQP (this is currently the default) and set the broker connection URL
+<3> Set the transport to be AMQP (this is currently the default) and set the broker connection URL
+<4> Build a Muon instance from the given config.
+
+This will now be available. You can check this using the Muon CLI.
+
+```
+
+muon discover
+
+```
+
+## Node.js
+
+Currently, only the the RS client stack is implemented in JavaScript.
+
+To use this, import Muon and the stack
+
+```
+npm install --save muon-core@next
+npm install --save muon-stack-reactive-streams@next
+```
+
+Then, create a Muon instance and RS client
+
+*index.js*
+[source, javascript]
+----
+var Muon = require("muon-core")
+
+var muonurl = process.env.MUON_URL || "amqp://muon:microservices@localhost"
+
+var muon = Muon.create("hello-world-node", muonurl);           <1>
+
+require("muon-stack-reactive-streams").create(muon)            <2>
+
+muon.subscribe("stream://hello-world-jvm/ticktock",{},         <3>
+    function(data) {
+        console.dir("Data..." + JSON.stringify(data))
+    },
+    function(error) {
+        console.dir(error)
+    },
+    function() {
+        logger.warn("Stream Completed")
+    }
+)
+
+----
+<1> Create a new Muon instance, connecting to a local AMQP broker for discovery and transport
+<2> Add the reactive streams stack.
+<3> Use the added `susbcribe` method to subscribe to the given endpoint.
+
+The above API maps the various RS signals onto javascript callback functions. It internally manages back pressure signalling.
+
+## Getting involved/ adding to this stack.
+
+Additions and extensions to this stack are very welcome.
+
+Particularly of interest are :-
+
+* Added language support
+* Adding the javascript server stack
+* Integrate with javascript FRP libraries.
