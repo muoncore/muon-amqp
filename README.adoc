@@ -1,4 +1,4 @@
-# AMQP Muon Transport
+# Muon AMQP Support: A Transport and a Discovery
 
 ## What is a Muon Transport?
 
@@ -6,11 +6,16 @@ Muon is a set of libraries and services that let you build highly effective dist
 
 Muon is structured as a set of libraries, known as `muon-core` that give a set of infrastructure for building messaging systems. These are available in multiple languages and handle the concerns of discovery, transport, encoding and managing failures. On top of these, the exact messaging semantics that you want to express are built. These are built as a "stack", a set of channels, agents and finally a user facing API that you will use in your application code. These messages need to be transferred between your services to enable them to communicate. A Muon Transport enables this communication by giving a standard bidirectional channel like interface between them that they can exchange messages over
 
+## What is a Muon Discovery?
+
+
+
+
 ## What is AMQP?
 
 AMQP is a wire standardised messaging protocol that is widely implemented across the industry. We use RabbitMQ in our testing.
 
-## JVM
+## Using the AMQP transport and discovery on the JVM
 
 To use the transport in Java, first import Muon and the transport. Here, we include the AMQP transport, along with a discovery. In a real system, you would add a messaging stack to give you an API to work with.
 
@@ -74,7 +79,7 @@ export MUON_URL=amqp://muon:microservices@localhost
 muon discover
 ```
 
-## Node.js
+## Using the transport and discovery on Node.js
 
 To use this, import Muon and the transport
 

@@ -1,5 +1,5 @@
 
-description = 'AMQP Transport for Muon Java'
+description = 'AMQP Transport and Discovery for Muon Java'
 
 repositories {
   maven {

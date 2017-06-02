@@ -28,7 +28,7 @@ class AmqpMessageTransformersSpec extends Specification {
         MuonMessageBuilder
                 .fromService("myService")
                 .step("somethingHappened")
-                .protocol(RRPTransformers.REQUEST_RESPONSE_PROTOCOL)
+                .protocol("fake")
                 .toService("theirService")
                 .payload([] as byte[])
                 .contentType("application/json")
@@ -40,7 +40,7 @@ class AmqpMessageTransformersSpec extends Specification {
         MuonMessageBuilder
                 .fromService("myService")
                 .step("somethingHappened")
-                .protocol(RRPTransformers.REQUEST_RESPONSE_PROTOCOL)
+                .protocol("fake")
                 .toService("theirService")
                 .payload([] as byte[])
                 .contentType("application/json")
