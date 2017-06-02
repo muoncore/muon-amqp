@@ -12,7 +12,7 @@ AMQP is a wire standardised messaging protocol that is widely implemented across
 
 ## JVM
 
-To use the transport in Java, first import Muon and the transport. Here, we include the AMQP transport, along with a discovery and a simple messaging stack (RPC) so you have an API to work with.
+To use the transport in Java, first import Muon and the transport. Here, we include the AMQP transport, along with a discovery. In a real system, you would add a messaging stack to give you an API to work with.
 
 *build.gradle*
 [source, groovy]
@@ -70,9 +70,8 @@ Muon muon = MuonBuilder
 This will now be available. You can check this using the Muon CLI.
 
 ```
-
+export MUON_URL=amqp://muon:microservices@localhost
 muon discover
-
 ```
 
 ## Node.js
