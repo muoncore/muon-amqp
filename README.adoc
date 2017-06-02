@@ -40,11 +40,9 @@ dependencies {
 
 ### Create a Muon connected using AMQP
 
-This stack allows you to expose an existing RS `Publisher` so that it can be subscribed to remotely, and exchange all the signals defined for Reactive Streams (including most importantly, the back pressure signals)
+To use the AMQP Discovery and Transport, you need to set the properties `muon.transport.factories` and `muon.discovery.factories`. These should be set to the appropriate AMQP specific version. Muon will then instantiate the factories and use them to create the Discovery and Factory instances for it to use.
 
-First then, you need to be able to obtain a Publisher. If you don't have one already, use a FRP system of some kind to make one. Consider using Spring Reactor, Akka Streams or RxJava, amongst others.
-
-Once you have a Publisher, you can use Muon to network it.
+You can configure which url will be used to connect to by setting the `amqp.discovery.url` and `amqp.transport.url` appropriately.
 
 [source, java]
 ----
