@@ -3,7 +3,7 @@ var client = require("../../src/transport/client");
 var server = require("../../src/transport/server");
 var assert = require('assert');
 var expect = require('expect.js');
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 var messages = require('muon-core').Messages;
 
 var BaseDiscovery = require("muon-core").BaseDiscovery;

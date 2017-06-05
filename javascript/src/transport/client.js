@@ -2,7 +2,7 @@ var RSVP = require('rsvp');
 require('sexylog');
 var helper = require('./transport-helper.js');
 var bichannel = require('muon-core').channel();
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 var messages = require('muon-core').Messages;
 
 var errCallback;
