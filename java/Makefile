@@ -20,7 +20,7 @@ endif
 	git push origin
 
 test:
-	./gradlew check
+	~./gradlew check
 
 clean:
 	./gradlew clean

@@ -12,4 +12,4 @@ publish-snapshot:
 
 test:
 	npm install
-	npm test
+	~npm test
