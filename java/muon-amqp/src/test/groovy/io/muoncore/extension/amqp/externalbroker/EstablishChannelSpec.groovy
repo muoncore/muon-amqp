@@ -40,7 +40,7 @@ class EstablishChannelSpec extends BaseEmbeddedBrokerSpec {
         svc1.start(discovery, serverStacks1, codecs, new Scheduler())
 
         when:
-        def channel = svc1.openClientChannel("tombola", "requestresponse")
+        def channel = svc1.openClientChannel("tombola", "faked")
         channel.receive {
             println "Received a message ... "
         }
@@ -49,7 +49,7 @@ class EstablishChannelSpec extends BaseEmbeddedBrokerSpec {
                 MuonMessageBuilder
                         .fromService("service1")
                         .step("somethingHappened")
-                        .protocol(RRPTransformers.REQUEST_RESPONSE_PROTOCOL)
+                        .protocol("faked")
                         .toService("tombola")
                         .payload([] as byte[])
                         .contentType("application/json")
@@ -57,7 +57,7 @@ class EstablishChannelSpec extends BaseEmbeddedBrokerSpec {
         sleep(50)
 
         then:
-        1 * serverStacks2.openServerChannel("requestresponse") >> Mock(ChannelConnection)
+        1 * serverStacks2.openServerChannel("faked") >> Mock(ChannelConnection)
 
         cleanup:
         svc1.shutdown()
@@ -66,13 +66,13 @@ class EstablishChannelSpec extends BaseEmbeddedBrokerSpec {
 
     private AMQPMuonTransport createTransport(serviceName) {
 
-        def connection = new RabbitMq09ClientAmqpConnection("amqp://muon:microservices@localhost")
+        def connection = new RabbitMq09ClientAmqpConnection("amqp://muon:microservices@localhost:6743")
         def queueFactory = new RabbitMq09QueueListenerFactory(connection.channel)
         def serviceQueue = new DefaultServiceQueue(serviceName, connection)
         def channelFactory = new DefaultAmqpChannelFactory(serviceName, queueFactory, connection)
 
         def svc1 = new AMQPMuonTransport(
-                "amqp://muon:microservices@localhost", serviceQueue, channelFactory)
+                "amqp://muon:microservices@localhost:6743", serviceQueue, channelFactory)
         svc1
     }
 }

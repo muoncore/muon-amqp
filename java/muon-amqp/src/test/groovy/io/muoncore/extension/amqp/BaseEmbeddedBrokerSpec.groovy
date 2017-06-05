@@ -20,7 +20,7 @@ abstract class BaseEmbeddedBrokerSpec extends Specification {
 
   def setupSpec() {
     println "BOoting embedded rabbitmq"
-    config = new EmbeddedRabbitMqConfig.Builder()
+    config = new EmbeddedRabbitMqConfig.Builder().port(6743)
       .build();
     rabbitMq = new EmbeddedRabbitMq(config);
     rabbitMq.start()

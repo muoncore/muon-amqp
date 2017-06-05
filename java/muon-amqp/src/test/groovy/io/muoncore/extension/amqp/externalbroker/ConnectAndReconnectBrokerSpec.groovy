@@ -35,7 +35,7 @@ class ConnectAndReconnectBrokerSpec extends BaseEmbeddedBrokerSpec {
 
   def setupSpec() {
     transport = muon("simples")
-    discovery.advertiseLocalService(new InstanceDescriptor("123", "simples", [], ["application/json"], [new URI("amqp://muon:microservices@localhost")], []))
+    discovery.advertiseLocalService(new InstanceDescriptor("123", "simples", [], ["application/json"], [new URI("amqp://muon:microservices@localhost:6743")], []))
   }
 
   def "will reconnect to a broker after connecting and the broker failing"() {
@@ -64,12 +64,12 @@ class ConnectAndReconnectBrokerSpec extends BaseEmbeddedBrokerSpec {
 
   private AMQPMuonTransport muon(serviceName) {
 
-    def connection = new RabbitMq09ClientAmqpConnection("amqp://muon:microservices@localhost")
+    def connection = new RabbitMq09ClientAmqpConnection("amqp://muon:microservices@localhost:6743")
     def serviceQueue = new DefaultServiceQueue(serviceName, connection)
     def channelFactory = new DefaultAmqpChannelFactory(serviceName, new RabbitMq09QueueListenerFactory(connection.getChannel()), connection)
 
     def ret =  new AMQPMuonTransport(
-      "amqp://muon:microservices@localhost", serviceQueue, channelFactory)
+      "amqp://muon:microservices@localhost:6743", serviceQueue, channelFactory)
     ret.start(discovery, serverStacks, new JsonOnlyCodecs(), new Scheduler())
     return ret
   }

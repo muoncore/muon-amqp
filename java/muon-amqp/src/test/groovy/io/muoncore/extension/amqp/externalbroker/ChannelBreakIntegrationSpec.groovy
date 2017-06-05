@@ -127,13 +127,13 @@ class ChannelBreakIntegrationSpec extends BaseEmbeddedBrokerSpec {
 
     private def muon(serviceName) {
 
-        def connection = new RabbitMq09ClientAmqpConnection("amqp://muon:microservices@localhost")
+        def connection = new RabbitMq09ClientAmqpConnection("amqp://muon:microservices@localhost:6743")
         def queueFactory = new ControllableQueueListenerFactory(connection.channel)
         def serviceQueue = new DefaultServiceQueue(serviceName, connection)
         def channelFactory = new DefaultAmqpChannelFactory(serviceName, queueFactory, connection)
 
         def svc1 = new AMQPMuonTransport(
-                "amqp://muon:microservices@localhost", serviceQueue, channelFactory)
+                "amqp://muon:microservices@localhost:6743", serviceQueue, channelFactory)
 
         def config = new AutoConfiguration(serviceName:serviceName)
         def muon = new MultiTransportMuon(config, discovery, [svc1], new JsonOnlyCodecs())
