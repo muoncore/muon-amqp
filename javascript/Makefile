@@ -11,7 +11,5 @@ publish-snapshot:
 	git push origin
 
 test:
-	mkdir -p test-results/
 	npm install
 	-npm test
-	mv xunit.xml test-results/

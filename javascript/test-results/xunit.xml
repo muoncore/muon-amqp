@@ -1,0 +1,43 @@
+<testsuite name="Mocha Tests" tests="25" failures="3" errors="3" skipped="0" timestamp="2017-06-05T15:56:47" time="28.306">
+<testcase classname="AMQP Discovery: " name="Discoveries can locate each other over the amqp broker" time="0"><failure message="could not find &amp;quot;simple&amp;quot; service in discovery list (services=){&amp;quot;serviceList&amp;quot;:[{&amp;quot;identifier&amp;quot;:&amp;quot;tombola&amp;quot;,&amp;quot;tags&amp;quot;:[&amp;quot;node&amp;quot;,&amp;quot;tombola&amp;quot;],&amp;quot;codecs&amp;quot;:[&amp;quot;application/json&amp;quot;],&amp;quot;connectionUrls&amp;quot;:[&amp;quot;amqp://muon:microservices@localhost:5672&amp;quot;],&amp;quot;time&amp;quot;:1496678184318},{&amp;quot;identifier&amp;quot;:&amp;quot;photonlite&amp;quot;,&amp;quot;tags&amp;quot;:[&amp;quot;eventstore&amp;quot;],&amp;quot;codecs&amp;quot;:[&amp;quot;application/json&amp;quot;,&amp;quot;avro&amp;quot;],&amp;quot;connectionUrls&amp;quot;:[&amp;quot;amqp://muon:microservices@rabbitmq&amp;quot;],&amp;quot;capabilities&amp;quot;:[&amp;quot;shared-channel&amp;quot;],&amp;quot;time&amp;quot;:1496678181622},{&amp;quot;identifier&amp;quot;:&amp;quot;muon-gateway&amp;quot;,&amp;quot;tags&amp;quot;:[&amp;quot;node&amp;quot;,&amp;quot;muon-gateway&amp;quot;],&amp;quot;codecs&amp;quot;:[&amp;quot;application/json&amp;quot;],&amp;quot;connectionUrls&amp;quot;:[&amp;quot;amqp://muon:microservices@rabbitmq&amp;quot;],&amp;quot;time&amp;quot;:1496678181942}]})"><![CDATA[AssertionError: could not find &quot;simple&quot; service in discovery list (services=){&quot;serviceList&quot;:[{&quot;identifier&quot;:&quot;tombola&quot;,&quot;tags&quot;:[&quot;node&quot;,&quot;tombola&quot;],&quot;codecs&quot;:[&quot;application/json&quot;],&quot;connectionUrls&quot;:[&quot;amqp://muon:microservices@localhost:5672&quot;],&quot;time&quot;:1496678184318},{&quot;identifier&quot;:&quot;photonlite&quot;,&quot;tags&quot;:[&quot;eventstore&quot;],&quot;codecs&quot;:[&quot;application/json&quot;,&quot;avro&quot;],&quot;connectionUrls&quot;:[&quot;amqp://muon:microservices@rabbitmq&quot;],&quot;capabilities&quot;:[&quot;shared-channel&quot;],&quot;time&quot;:1496678181622},{&quot;identifier&quot;:&quot;muon-gateway&quot;,&quot;tags&quot;:[&quot;node&quot;,&quot;muon-gateway&quot;],&quot;codecs&quot;:[&quot;application/json&quot;],&quot;connectionUrls&quot;:[&quot;amqp://muon:microservices@rabbitmq&quot;],&quot;time&quot;:1496678181942}]})
+    at test/amqp-discovery-test.js:56:16
+    at Timeout.&lt;anonymous&gt; (node_modules/muon-core/distribution/discovery/base-discovery.js:107:11)]]></failure></testcase>
+<testcase classname="AMQP Discovery: " name="Discovery cache will expire" time="12.015"/>
+<testcase classname="amqp api test:" name="send and receive arbitrary number of messages" time="0.124"/>
+<testcase classname="amqp api test:" name="sending invalid message schema throws exception on channel" time="0.05"/>
+<testcase classname="amqp api test:" name="invalid amqp url string" time="0.002"/>
+<testcase classname="amqp api test:" name="invalid amqp url auth" time="0.004"/>
+<testcase classname="amqp api test:" name="invalid amqp url port" time="0.002"/>
+<testcase classname="muon client/server transport test: " name="client server negotiate handshake and exchange rpc message" time="0.644"/>
+<testcase classname="muon client/server transport test: " name="client server negotiate handshake and exchange string message" time="0.179"/>
+<testcase classname="muon client/server transport test: " name="when discovery cache populated, will rapidly connect and exchange messages" time="6.644"/>
+<testcase classname="client test:" name="client discovery error handled gracefully" time="0"><failure message="Handshake took too long, 2016"><![CDATA[AssertionError: Handshake took too long, 2016
+    at test/transport/client-server-test.js:198:17
+    at _callee$ (node_modules/muon-core/distribution/infrastructure/channel.js:145:33)
+    at tryCatch (node_modules/regenerator-runtime/runtime.js:65:40)
+    at Generator.invoke [as _invoke] (node_modules/regenerator-runtime/runtime.js:303:22)
+    at Generator.prototype.(anonymous function) [as next] (node_modules/regenerator-runtime/runtime.js:117:21)
+    at Process.run (node_modules/js-csp/lib/js-csp.js:749:40)
+    at Immediate.setImmediate (node_modules/js-csp/lib/js-csp.js:736:31)]]></failure></testcase>
+<testcase classname="client test:" name="client deletes muon socket queues on channel_op equals closed message" time="0.104"/>
+<testcase classname="muon transport server-test:" name="server amqpapi connection errors handled gracefully" time="0.001"/>
+<testcase classname="muon transport server-test:" name="server deletes muon socket queues on channel_op equals closed message" time="0.003"/>
+<testcase classname="transport helper test" name="encode/decode for wire" time="0"/>
+<testcase classname="transport helper test" name="create handshake request headers" time="0"/>
+<testcase classname="transport helper test" name="create handshake accept headers" time="0"/>
+<testcase classname="transport helper test" name="create string from wire message payload" time="0"/>
+<testcase classname="transport helper test" name="create object from wire message payload" time="0.001"/>
+<testcase classname="transport helper test" name="validate handshake message" time="0"/>
+<testcase classname="transport helper test" name="catch invalid handshake initiate message" time="0.002"/>
+<testcase classname="transport helper test" name="catch invalid handshake accept message" time="0.002"/>
+<testcase classname="transport helper test" name="catch invalid data message" time="0.002"/>
+<testcase classname="transport helper test" name="allow null data message" time="0"/>
+<testcase classname="muon transport test: " name="client server negotiate handshake" time="0"><failure message="undefined == 'PING'"><![CDATA[AssertionError: undefined == 'PING'
+    at test/transport/client-server-test.js:68:20
+    at _callee$ (node_modules/muon-core/distribution/infrastructure/channel.js:145:33)
+    at tryCatch (node_modules/regenerator-runtime/runtime.js:65:40)
+    at Generator.invoke [as _invoke] (node_modules/regenerator-runtime/runtime.js:303:22)
+    at Generator.prototype.(anonymous function) [as next] (node_modules/regenerator-runtime/runtime.js:117:21)
+    at Process.run (node_modules/js-csp/lib/js-csp.js:749:40)
+    at Immediate.setImmediate (node_modules/js-csp/lib/js-csp.js:736:31)]]></failure></testcase>
+</testsuite>
