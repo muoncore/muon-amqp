@@ -17,6 +17,7 @@ import io.muoncore.message.MuonOutboundMessage
 import io.muoncore.protocol.ServerStacks
 import reactor.Environment
 import spock.lang.AutoCleanup
+import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
 import spock.util.concurrent.PollingConditions
@@ -25,6 +26,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
+@Ignore
 @IgnoreIf({ System.getenv("SHORT_TEST") })
 class ChannelThroughputSpec extends BaseEmbeddedBrokerSpec {
 

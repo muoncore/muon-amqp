@@ -26,7 +26,7 @@ class EstablishChannelSpec extends BaseEmbeddedBrokerSpec {
     def codecs = new JsonOnlyCodecs()
 
     def discovery = Mock(Discovery) {
-        getServiceByName(_) >> Optional.of(new ServiceDescriptor("", [], [], [], []))
+        getServiceNamede(_) >> Optional.of(new ServiceDescriptor("", [], [], [], []))
     }
 
     def "two transports can establish an AMQP channel between them"() {

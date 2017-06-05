@@ -22,10 +22,12 @@ import org.reactivestreams.Subscription
 import reactor.Environment
 import reactor.rx.broadcast.Broadcaster
 import spock.lang.AutoCleanup
+import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Shared
 import spock.util.concurrent.PollingConditions
 
+@Ignore
 @IgnoreIf({ System.getenv("SHORT_TEST") })
 class ChannelBreakIntegrationSpec extends BaseEmbeddedBrokerSpec {
 
