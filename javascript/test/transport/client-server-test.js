@@ -1,20 +1,19 @@
-var bichannel = require('../../../muon/infrastructure/channel');
-var client = require('../../../muon/transport/amqp/client');
-var server = require('../../../muon/transport/amqp/server');
+var bichannel = require('muon-core').channel();
+var client = require("../../src/transport/client");
+var server = require("../../src/transport/server");
 var assert = require('assert');
 var expect = require('expect.js');
 var uuid = require('node-uuid');
-var messages = require('../../../muon/domain/messages');
+var messages = require('muon-core').Messages;
 
-var BaseDiscovery = require("../../../muon/discovery/base-discovery");
+var BaseDiscovery = require("muon-core").BaseDiscovery;
 
-var amqp = require('../../../muon/transport/amqp/amqp-api');
-var AmqpDiscovery = require('../../../muon/discovery/amqp/discovery');
+var amqp = require('../../src/transport/amqp-api');
+var AmqpDiscovery = require('../../src/discovery/discovery');
 
 var url = process.env.MUON_URL || "amqp://muon:microservices@localhost";
 var amqpApi;
 var discovery;
-
 
 describe("muon client/server transport test: ", function () {
 

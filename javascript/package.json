@@ -24,6 +24,7 @@
     "mocha-sinon": "1.1.5",
     "mocha-teamcity-reporter": "1.1.1",
     "should": "11.1.0",
-    "sinon": "1.17.5"
+    "sinon": "1.17.5",
+    "xunit-file": "^1.0.0"
   }
 }

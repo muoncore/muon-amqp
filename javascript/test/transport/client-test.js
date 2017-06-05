@@ -1,15 +1,15 @@
-var bichannel = require('../../../muon/infrastructure/channel.js');
-var client = require('../../../muon/transport/amqp/client.js');
-var server = require('../../../muon/transport/amqp/server.js');
+var bichannel = require('muon-core').channel();
+var client = require('../../src/transport/client.js');
+var server = require('../../src/transport/server.js');
 var assert = require('assert');
 var expect = require('expect.js');
 var uuid = require('node-uuid');
-var messages = require('../../../muon/domain/messages.js');
-var amqp = require('../../../muon/transport/amqp/amqp-api.js');
+var messages = require('muon-core').Messages;
+var amqp = require('../../src/transport/amqp-api.js');
 var amqplib = require('amqplib/callback_api');
 
-var AmqpDiscovery = require("../../../muon/discovery/amqp/discovery");
-var BaseDiscovery = require("../../../muon/discovery/base-discovery");
+var AmqpDiscovery = require("../../src/discovery/discovery");
+var BaseDiscovery = require("muon-core").BaseDiscovery;
 
 describe("client test:", function () {
 
@@ -27,7 +27,7 @@ describe("client test:", function () {
         muonClientChannel.listen(function (msg) {
             expect(msg.status).to.contain('failure');
             var payload = messages.decode(msg.payload);
-            expect(payload.status).to.contain('noserver');
+            expect(payload.status).to.contain('ServiceNotFound');
             done();
         });
     });

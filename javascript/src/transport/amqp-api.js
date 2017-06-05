@@ -1,9 +1,9 @@
 
 var RSVP = require('rsvp');
-var bichannel = require('../../infrastructure/channel.js');
+var bichannel = require('muon-core').channel();
 require('sexylog');
 var RSVP = require('rsvp');
-var messages = require('../../domain/messages.js');
+var messages = require('muon-core').Messages;
 var nodeUrl = require('url');
 var helper = require('./transport-helper.js');
 

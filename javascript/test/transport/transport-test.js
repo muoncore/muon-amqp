@@ -1,11 +1,11 @@
-var amqpTransport = require('../../../muon/transport/amqp/transport.js');
+var amqpTransport = require('../../src/transport/transport.js');
 var assert = require('assert');
 var expect = require('expect.js');
-var messages = require('../../../muon/domain/messages.js');
-var bichannel = require('../../../muon/infrastructure/channel.js');
-var builder = require("../../../muon/infrastructure/builder");
-var AmqpDiscovery = require("../../../muon/discovery/amqp/discovery");
-var BaseDiscovery = require("../../../muon/discovery/base-discovery");
+var messages = require('muon-core').Messages;
+var bichannel = require('muon-core').channel();
+// var builder = require("../../../muon/infrastructure/builder");
+var AmqpDiscovery = require("../../src/discovery/discovery");
+var BaseDiscovery = require("muon-core").BaseDiscovery;
 
 
 describe("muon transport test: ", function () {

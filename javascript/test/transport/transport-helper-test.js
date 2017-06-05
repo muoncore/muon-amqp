@@ -1,5 +1,5 @@
-var helper = require('../../../muon/transport/amqp/transport-helper.js');
-var messages = require('../../../muon/domain/messages.js');
+var helper = require('../../src/transport/transport-helper.js');
+var messages = require('muon-core').Messages;
 var assert = require('assert');
 var expect = require('expect.js');
 

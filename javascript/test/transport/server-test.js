@@ -1,11 +1,11 @@
-var bichannel = require('../../../muon/infrastructure/channel.js');
-var server = require('../../../muon/transport/amqp/server.js');
+var bichannel = require('muon-core').channel();
+var server = require('../../src/transport/server.js');
 var assert = require('assert');
 var expect = require('expect.js');
 var uuid = require('node-uuid');
-var messages = require('../../../muon/domain/messages.js');
-var AmqpDiscovery = require("../../../muon/discovery/amqp/discovery");
-var helper = require('../../../muon/transport/amqp/transport-helper.js');
+var messages = require('muon-core').Messages;
+var AmqpDiscovery = require("../../src/discovery/discovery");
+var helper = require('../../src/transport/transport-helper.js');
 
 describe("muon transport server-test:", function () {
 

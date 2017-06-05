@@ -1,7 +1,7 @@
 var uuid = require('node-uuid');
 var Joi = require('joi');
 require('sexylog');
-var messages = require('../../domain/messages.js');
+var messages = require('muon-core').Messages;
 
 // Regular expressions for transport message format:
 var reply_queue_regex = /[a-z0-9\-]\.reply\.[a-zA-Z0-9\-]/;

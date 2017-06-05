@@ -1,9 +1,10 @@
 var client = require('./client.js');
 var server = require('./server.js');
-var bichannel = require('../../infrastructure/channel.js');
+var bichannel = require('muon-core').channel();
 
-var MuonSocketAgent = require('../../socket/keep-alive-agent');
+var MuonSocketAgent = require('muon-core').MuonSocketAgent;
 var RSVP = require('rsvp');
+
 
 exports.create = function (localServiceName, url, serverStacks, discovery) {
 
@@ -19,7 +20,7 @@ exports.create = function (localServiceName, url, serverStacks, discovery) {
     }
 
     var promise = new RSVP.Promise(function (resolve, reject) {
-        var amqp = require('../../transport/amqp/amqp-api.js');
+        var amqp = require('./amqp-api');
         amqp.connect(url).then(function (amqpApi) {
             server.connect(localServiceName, amqpApi, serverStacks, discovery);
             server.onError(transportErrCallback);

@@ -1,10 +1,10 @@
 //var amqp = require('../../../muon/transport/amqp/amqp-api.js');
 var RSVP = require('rsvp');
-var bichannel = require('../../infrastructure/channel.js');
+var bichannel = require('muon-core').channel();
 var helper = require('./transport-helper.js');
 require('sexylog');
-var messages = require('../../domain/messages.js');
-var MuonSocketAgent = require("../../socket/keep-alive-agent")
+var messages = require('muon-core').Messages;
+var MuonSocketAgent = require("muon-core").MuonSocketAgent
 var errCallback;
 
 exports.connect = function (serviceName, amqpApi, serverStacks, discovery) {
