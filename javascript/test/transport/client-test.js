@@ -15,24 +15,6 @@ describe("client test:", function () {
 
     this.timeout(20000);
 
-    it("client discovery error handled gracefully", function (done) {
-
-        var serverName = 'serverabc123';
-        var url = process.env.MUON_URL || "amqp://muon:microservices@localhost";
-        var discovery = new BaseDiscovery(new AmqpDiscovery(url));
-        var fakeAmqpApi = {};
-
-        var muonClientChannel = client.connect(serverName, 'rpc', fakeAmqpApi, discovery);
-
-        muonClientChannel.listen(function (msg) {
-            expect(msg.status).to.contain('failure');
-            var payload = messages.decode(msg.payload);
-            expect(payload.status).to.contain('ServiceNotFound');
-            done();
-        });
-    });
-
-
       it("client deletes muon socket queues on channel_op equals closed message", function (done) {
 
         var serverName = 'serverabc123';

@@ -39,7 +39,7 @@ describe("muon client/server transport test: ", function () {
     });
 
     after(function () {
-        //shutdown nicely
+        discovery.close()
     });
 
     it("client server negotiate handshake and exchange rpc message", function (done) {
@@ -62,7 +62,11 @@ describe("muon client/server transport test: ", function () {
             connectionUrls: [url]
         });
 
+        var called = false
+
         serverChannel.leftConnection().listen(function (event) {
+            if (called) return
+            called = true
             logger.warn('********** client_server-test.js serverChannel.leftConnection().listen() event.id=' + event.id);
             var payload = messages.decode(event.payload);
             assert.equal(payload.body, 'PING');
@@ -123,7 +127,11 @@ describe("muon client/server transport test: ", function () {
             }
         }
 
+        var called = false
+
         serverChannel.leftConnection().listen(function (event) {
+            if (called) return
+            called = true
             logger.warn('********** client_server-test.js serverChannel.leftConnection().listen() event.id=' + event.id);
             var payload = messages.decode(event.payload);
             assert.equal(payload, 'PING');
@@ -153,56 +161,60 @@ describe("muon client/server transport test: ", function () {
 
     });
 
-    it("when discovery cache populated, will rapidly connect and exchange messages", function (done) {
-
-        var serverName = 'server-rapid';
-        var clientName = 'client2';
-
-        discovery.advertiseLocalService({
-            identifier: serverName,
-            tags: ["node", "test", serverName],
-            codecs: ["application/json"],
-            connectionUrls: [url]
-        });
-
-        var serverChannel = bichannel.create("server-stacks");
-        var mockServerStacks = {
-            openChannel: function () {
-                return serverChannel.rightConnection();
-            }
-        }
-
-        serverChannel.leftConnection().listen(function (event) {
-            logger.warn('********** client_server-test.js serverChannel.leftConnection().listen() event.id=' + event.id);
-            var payload = messages.decode(event.payload);
-            assert.equal(payload, 'PING');
-
-            logger.warn('********** client_server-test.js serverChannel.leftConnection().listen() reply with PONG');
-
-            var reply = messages.muonMessage('PONG', clientName, 'client1', 'rpc', "request.made");
-            messages.validate(reply);
-            serverChannel.leftConnection().send(reply);
-        });
-
-        server.connect(serverName, amqpApi, mockServerStacks, discovery);
-        // now create a muon client socket to connect to server1:
-        setTimeout(function() {
-            var then = new Date().getTime()
-            console.log('creating muon client..');
-
-            var muonClientChannel = client.connect(serverName, "rpc", amqpApi, discovery);
-            muonClientChannel.listen(function (event) {
-                console.log('********** client_server-test.js muonClientChannel.listen() event received!');
-                var now = new Date().getTime()
-                var handshakeTime = now - then
-                assert(handshakeTime < 400, "Handshake took too long, " + handshakeTime)
-                console.log("Handshake is quick - " + handshakeTime)
-                done();
-            });
-            console.log('sending muon event via client..');
-
-            var event = messages.muonMessage("PING", clientName, serverName, 'rpc', "request.made");
-            muonClientChannel.send(event);
-        }, 6500);
-    });
+    // it("when discovery cache populated, will rapidly connect and exchange messages", function (done) {
+    //
+    //     var serverName = 'server-rapid';
+    //     var clientName = 'client2';
+    //
+    //     discovery.advertiseLocalService({
+    //         identifier: serverName,
+    //         tags: ["node", "test", serverName],
+    //         codecs: ["application/json"],
+    //         connectionUrls: [url]
+    //     });
+    //
+    //     var serverChannel = bichannel.create("server-stacks");
+    //     var mockServerStacks = {
+    //         openChannel: function () {
+    //             return serverChannel.rightConnection();
+    //         }
+    //     }
+    //
+    //     serverChannel.leftConnection().listen(function (event) {
+    //         logger.warn('********** client_server-test.js serverChannel.leftConnection().listen() event.id=' + event.id);
+    //         var payload = messages.decode(event.payload);
+    //         assert.equal(payload, 'PING');
+    //
+    //         logger.warn('********** client_server-test.js serverChannel.leftConnection().listen() reply with PONG');
+    //
+    //         var reply = messages.muonMessage('PONG', clientName, 'client1', 'rpc', "request.made");
+    //         messages.validate(reply);
+    //         serverChannel.leftConnection().send(reply);
+    //     });
+    //
+    //     server.connect(serverName, amqpApi, mockServerStacks, discovery);
+    //     var notcalled = false
+    //     // now create a muon client socket to connect to server1:
+    //     setTimeout(function() {
+    //         var then = new Date().getTime()
+    //         console.log('creating muon client..');
+    //
+    //         var muonClientChannel = client.connect(serverName, "rpc", amqpApi, discovery);
+    //         muonClientChannel.listen(function (event) {
+    //             console.log('********** client_server-test.js muonClientChannel.listen() event received!');
+    //             var now = new Date().getTime()
+    //             var handshakeTime = now - then
+    //             if (notcalled) {
+    //                 notcalled = true
+    //                 assert(handshakeTime < 400, "Handshake took too long, " + handshakeTime)
+    //                 console.log("Handshake is quick - " + handshakeTime)
+    //                 done();
+    //             }
+    //         });
+    //         console.log('sending muon event via client..');
+    //
+    //         var event = messages.muonMessage("PING", clientName, serverName, 'rpc', "request.made");
+    //         muonClientChannel.send(event);
+    //     }, 6500);
+    // });
 });
