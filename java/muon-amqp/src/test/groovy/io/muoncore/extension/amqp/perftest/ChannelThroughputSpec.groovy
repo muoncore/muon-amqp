@@ -27,7 +27,6 @@ import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
 @Ignore
-@IgnoreIf({ System.getenv("SHORT_TEST") })
 class ChannelThroughputSpec extends BaseEmbeddedBrokerSpec {
 
     def discovery = new InMemDiscovery()

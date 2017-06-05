@@ -28,7 +28,6 @@ import spock.lang.Shared
 import spock.util.concurrent.PollingConditions
 
 @Ignore
-@IgnoreIf({ System.getenv("SHORT_TEST") })
 class ChannelBreakIntegrationSpec extends BaseEmbeddedBrokerSpec {
 
     @Shared def discovery = new InMemDiscovery()
