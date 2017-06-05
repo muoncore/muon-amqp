@@ -14,11 +14,13 @@ import io.muoncore.extension.amqp.MyTestClass
 import io.muoncore.extension.amqp.rabbitmq09.RabbitMq09ClientAmqpConnection
 import io.muoncore.extension.amqp.rabbitmq09.RabbitMq09QueueListenerFactory
 import reactor.Environment
+import spock.lang.Ignore
 
 import java.util.concurrent.TimeUnit
 
 import static io.muoncore.codec.types.MuonCodecTypes.listOf
 
+@Ignore
 class RequestResponseWorksSpec extends BaseEmbeddedBrokerSpec {
 
     def discovery = Mock(Discovery) {

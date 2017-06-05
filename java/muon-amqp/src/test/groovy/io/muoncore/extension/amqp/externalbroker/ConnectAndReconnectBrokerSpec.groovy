@@ -16,11 +16,11 @@ import io.muoncore.protocol.defaultproto.DefaultServerProtocol
 import io.muoncore.transport.client.SimpleTransportMessageDispatcher
 import reactor.Environment
 import spock.lang.AutoCleanup
-import spock.lang.IgnoreIf
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.util.concurrent.PollingConditions
 
-@IgnoreIf({ System.getenv("SHORT_TEST") })
+@Ignore
 class ConnectAndReconnectBrokerSpec extends BaseEmbeddedBrokerSpec {
 
   @Shared

@@ -23,6 +23,7 @@ import spock.util.concurrent.PollingConditions
 
 import static io.muoncore.codec.types.MuonCodecTypes.listOf
 
+@Ignore
 class ReactiveStreamIntegrationSpec extends BaseEmbeddedBrokerSpec {
 
     @Shared def discovery = new InMemDiscovery()
