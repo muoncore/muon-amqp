@@ -14,7 +14,9 @@ import io.muoncore.extension.amqp.QueueListener
 import io.muoncore.extension.amqp.rabbitmq09.RabbitMq09ClientAmqpConnection
 import io.muoncore.extension.amqp.rabbitmq09.RabbitMq09QueueListenerFactory
 import io.muoncore.memory.discovery.InMemDiscovery
+import io.muoncore.protocol.reactivestream.client.ReactiveStreamClient
 import io.muoncore.protocol.reactivestream.server.PublisherLookup
+import io.muoncore.protocol.reactivestream.server.ReactiveStreamServer
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
 import reactor.Environment
@@ -33,6 +35,11 @@ class ChannelBreakIntegrationSpec extends BaseEmbeddedBrokerSpec {
     @Shared
     def muon1
     @Shared
+    def rsServer
+    @Shared
+    def rsClient
+
+    @Shared
     ControllableQueueListenerFactory queuefactory1
     @Shared
     ControllableQueueListenerFactory queuefactory2
@@ -43,7 +50,7 @@ class ChannelBreakIntegrationSpec extends BaseEmbeddedBrokerSpec {
 
     def setupSpec() {
         def l
-        (queuefactory1, muon1) = muon("simples")
+        (queuefactory1, muon1, rsClient, rsServer) = muon("simples")
         (queuefactory2, muon2) = muon("tombola")
     }
 
@@ -87,10 +94,10 @@ class ChannelBreakIntegrationSpec extends BaseEmbeddedBrokerSpec {
       }
       muon2.getTransportControl().tap({ true }).subscribe(tap)
 
-        muon1.publishSource("somedata", PublisherLookup.PublisherType.HOT, b)
+        rsServer.publishSource("somedata", PublisherLookup.PublisherType.HOT, b)
         sleep(4000)
         when:
-        muon2.subscribe(new URI("stream://simples/somedata"), sub2)
+        rsClient.subscribe(new URI("stream://simples/somedata"), sub2)
 
         sleep(1000)
 
@@ -130,7 +137,7 @@ class ChannelBreakIntegrationSpec extends BaseEmbeddedBrokerSpec {
         def config = new AutoConfiguration(serviceName:serviceName)
         def muon = new MultiTransportMuon(config, discovery, [svc1], new JsonOnlyCodecs())
 
-        return [queueFactory, muon]
+        return [queueFactory, muon, new ReactiveStreamClient(muon), new ReactiveStreamServer(muon)]
     }
 
     class ControllableQueueListenerFactory extends RabbitMq09QueueListenerFactory {

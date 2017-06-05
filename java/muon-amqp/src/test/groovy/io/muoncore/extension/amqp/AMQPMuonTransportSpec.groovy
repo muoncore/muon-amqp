@@ -14,7 +14,7 @@ class AMQPMuonTransportSpec extends Specification {
 
     def codecs = new JsonOnlyCodecs()
     def discovery = Mock(Discovery) {
-        findService(_) >> Optional.of(new ServiceDescriptor("identifier", [], [], [], []))
+        getServiceNamed(_) >> Optional.of(new ServiceDescriptor("identifier", [], [], [], []))
     }
 
     def "Opens listen service queue for handshake. For every handshake, create a new channel"() {
@@ -145,7 +145,7 @@ class AMQPMuonTransportSpec extends Specification {
     def "openClientChannel on non existent service will cause a failure"() {
         given:
         discovery = Mock(Discovery) {
-            findService(_) >> Optional.empty()
+            getServiceNamed(_) >> Optional.empty()
         }
 
         Environment.initializeIfEmpty()
