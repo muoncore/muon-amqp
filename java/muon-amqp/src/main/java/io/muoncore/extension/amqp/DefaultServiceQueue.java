@@ -2,11 +2,13 @@ package io.muoncore.extension.amqp;
 
 import io.muoncore.channel.ChannelConnection;
 import io.muoncore.extension.amqp.rabbitmq09.RabbitMq09QueueListener;
+import lombok.extern.slf4j.Slf4j;
 
 import static io.muoncore.extension.amqp.QueueMessageBuilder.HEADER_PROTOCOL;
 import static io.muoncore.extension.amqp.QueueMessageBuilder.HEADER_RECEIVE_QUEUE;
 import static io.muoncore.extension.amqp.QueueMessageBuilder.HEADER_REPLY_TO;
 
+@Slf4j
 public class DefaultServiceQueue implements ServiceQueue {
 
     private RabbitMq09QueueListener listener;
@@ -28,7 +30,10 @@ public class DefaultServiceQueue implements ServiceQueue {
     public void onHandshake(ChannelConnection.ChannelFunction<AmqpHandshakeMessage> channelFunction) {
         if (listener != null) throw new IllegalStateException("QueueListener already has a handshake.");
 
+        log.warn("Got a handshake!");
         listener = new RabbitMq09QueueListener(connection.getChannel(), "service." + serviceName, fun -> {
+
+            if (fun == null) return;
 
             AmqpHandshakeMessage handshake = new AmqpHandshakeMessage(
                     fun.getHeaders().get(HEADER_PROTOCOL).toString(),
@@ -36,7 +41,10 @@ public class DefaultServiceQueue implements ServiceQueue {
                     fun.getHeaders().get(HEADER_RECEIVE_QUEUE).toString());
 
             channelFunction.apply(handshake);
+        }, () -> {
+
         });
+
         listener.start();
         listener.blockUntilReady();
     }

@@ -5,6 +5,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
+import io.muoncore.extension.amqp.AmqpConnection;
 import io.muoncore.extension.amqp.QueueListener;
 import io.muoncore.extension.amqp.QueueMessageBuilder;
 import org.slf4j.Logger;
@@ -17,14 +18,14 @@ import java.util.Map;
 public class RabbitMq09BroadcastListener implements QueueListener {
 
     private boolean running;
-    private Channel channel;
+    private AmqpConnection.ExecuteWithChannel channel;
     private Logger log = LoggerFactory.getLogger(RabbitMq09BroadcastListener.class.getName());
     private String broadcastMessageType;
     private String queueName;
     private QueueFunction listener;
     private QueueingConsumer consumer;
 
-    public RabbitMq09BroadcastListener(Channel channel, String broadcastMessageType, QueueFunction function) {
+    public RabbitMq09BroadcastListener(AmqpConnection.ExecuteWithChannel channel, String broadcastMessageType, QueueFunction function) {
         this.channel = channel;
         this.broadcastMessageType = broadcastMessageType;
         this.listener = function;
@@ -34,7 +35,8 @@ public class RabbitMq09BroadcastListener implements QueueListener {
         synchronized (this) {
             try {
                 wait();
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
         }
     }
 
@@ -43,50 +45,52 @@ public class RabbitMq09BroadcastListener implements QueueListener {
     }
 
     public void run() {
-        try {
-            channel.exchangeDeclare("muon-broadcast", "topic");
+        channel.executeOnEveryConnect(channel -> {
+            try {
+                channel.exchangeDeclare("muon-broadcast", "topic");
 
-            queueName = channel.queueDeclare().getQueue();
+                queueName = channel.queueDeclare().getQueue();
 
-            channel.queueBind(queueName, "muon-broadcast", broadcastMessageType);
+                channel.queueBind(queueName, "muon-broadcast", broadcastMessageType);
 
-            synchronized (this) {
-                notify();
-            }
-
-            consumer = new QueueingConsumer(channel);
-            channel.basicConsume(queueName, false, consumer);
-
-            running = true;
-            while (running) {
-                try {
-                    QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-
-                    byte[] content = delivery.getBody();
-
-                    Map<String, Object> headers = delivery.getProperties().getHeaders();
-
-                    if (headers == null) {
-                        headers = new HashMap<>();
-                    }
-
-                    Map<String, String> newHeaders = new HashMap<>();
-
-                    headers.entrySet().stream().forEach( entry -> newHeaders.put(entry.getKey(), entry.getValue().toString()));
-                    newHeaders.putIfAbsent(QueueMessageBuilder.HEADER_CONTENT_TYPE, headers.get("Content-Type").toString());
-                    listener.exec(new QueueMessage(broadcastMessageType, content, newHeaders));
-
-                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
-                } catch (ShutdownSignalException | ConsumerCancelledException ex) {
-                    log.debug("Channel shuts down", ex);
-                } catch (Exception e) {
-                    log.warn(e.getMessage(), e);
+                synchronized (this) {
+                    notify();
                 }
+
+                consumer = new QueueingConsumer(channel);
+                channel.basicConsume(queueName, false, consumer);
+
+                running = true;
+                while (running) {
+                    try {
+                        QueueingConsumer.Delivery delivery = consumer.nextDelivery();
+
+                        byte[] content = delivery.getBody();
+
+                        Map<String, Object> headers = delivery.getProperties().getHeaders();
+
+                        if (headers == null) {
+                            headers = new HashMap<>();
+                        }
+
+                        Map<String, String> newHeaders = new HashMap<>();
+
+                        headers.entrySet().stream().forEach(entry -> newHeaders.put(entry.getKey(), entry.getValue().toString()));
+                        newHeaders.putIfAbsent(QueueMessageBuilder.HEADER_CONTENT_TYPE, headers.get("Content-Type").toString());
+                        listener.exec(new QueueMessage(broadcastMessageType, content, newHeaders));
+
+                        channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+                    } catch (ShutdownSignalException | ConsumerCancelledException ex) {
+                        log.debug("Channel shuts down", ex);
+                    } catch (Exception e) {
+                        log.warn(e.getMessage(), e);
+                    }
+                }
+            } catch (Exception e) {
+                log.warn(e.getMessage(), e);
             }
-        } catch (Exception e) {
-            log.warn(e.getMessage(), e);
-        }
-        log.debug("Broadcast Listener exits: " + broadcastMessageType);
+            log.debug("Broadcast Listener exits: " + broadcastMessageType);
+        });
     }
 
     public void cancel() {
@@ -96,11 +100,13 @@ public class RabbitMq09BroadcastListener implements QueueListener {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
-                channel.queueDelete(queueName, false, false);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            channel.executeNowIfChannelIsOpen(channel -> {
+                try {
+                    channel.queueDelete(queueName, false, false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 }

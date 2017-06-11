@@ -12,23 +12,39 @@ import spock.lang.Specification
 abstract class BaseEmbeddedBrokerSpec extends Specification {
 
   @Shared
-  @AutoCleanup("stop")
-  EmbeddedRabbitMq rabbitMq
+  private EmbeddedRabbitMq rabbitMq
 
   @Shared
   EmbeddedRabbitMqConfig config
 
-  def setupSpec() {
-    println "BOoting embedded rabbitmq"
-    config = new EmbeddedRabbitMqConfig.Builder().port(6743)
-      .build();
-    rabbitMq = new EmbeddedRabbitMq(config);
-    rabbitMq.start()
+  def cleanupSpec() {
+    brokerStop()
+  }
 
-    sleep(3000)
-    cmd "rabbitmqctl", "add_user", "muon", "microservices"
-    cmd "rabbitmqctl", "set_user_tags", "muon", "administrator"
-    cmd "rabbitmqctl", "set_permissions", "-p", "/", "muon", '.*', '.*', '.*'
+  def brokerStop() {
+    if (rabbitMq) {
+      rabbitMq.stop()
+      rabbitMq = null
+    }
+  }
+
+  def brokerStart() {
+    if (!rabbitMq) {
+      println "BOoting embedded rabbitmq"
+      config = new EmbeddedRabbitMqConfig.Builder().port(6743)
+              .build();
+      rabbitMq = new EmbeddedRabbitMq(config);
+      rabbitMq.start()
+
+      sleep(3000)
+      cmd "rabbitmqctl", "add_user", "muon", "microservices"
+      cmd "rabbitmqctl", "set_user_tags", "muon", "administrator"
+      cmd "rabbitmqctl", "set_permissions", "-p", "/", "muon", '.*', '.*', '.*'
+    }
+  }
+
+  def setupSpec() {
+    brokerStart()
   }
 
   def cmd(String cmd, String...args) {

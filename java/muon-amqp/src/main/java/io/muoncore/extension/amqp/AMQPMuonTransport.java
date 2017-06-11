@@ -104,11 +104,11 @@ public class AMQPMuonTransport implements MuonTransport {
 
             AmqpChannel amqpChannel = channelFactory.createChannel();
 
+//            Channels.connect(amqpChannel, serverChannelConnection);
             Channels.connect(amqpChannel, keepAliveChannel.right());
             Channels.connect(serverChannelConnection, keepAliveChannel.left());
 
             amqpChannel.respondToHandshake(handshake);
-
 
             channels.add(amqpChannel);
         });

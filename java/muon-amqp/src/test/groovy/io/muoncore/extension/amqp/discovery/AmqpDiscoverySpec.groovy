@@ -57,9 +57,4 @@ class AmqpDiscoverySpec extends Specification {
         } as QueueListener.QueueMessage)
     }
 
-    def "reconnects when remote broker drops"() {
-
-
-
-    }
 }
