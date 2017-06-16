@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/muoncore/muon-amqp/tree/HEAD)
 
+**Closed issues:**
+
+- Add an AMQP reconnect on failure [\#1](https://github.com/muoncore/muon-amqp/issues/1)
+
 **Merged pull requests:**
 
 - Reconnect and rebuild connections when the broker fails. [\#3](https://github.com/muoncore/muon-amqp/pull/3) ([daviddawson](https://github.com/daviddawson))
