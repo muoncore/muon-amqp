@@ -20,6 +20,7 @@ import spock.lang.IgnoreIf
 import spock.lang.Specification
 import spock.lang.Timeout
 
+@Ignore
 @Timeout(60)
 class FullStackSpec extends BaseEmbeddedBrokerSpec {
 
