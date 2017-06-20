@@ -50,6 +50,7 @@ public class AMQPMuonTransport implements MuonTransport {
     public void shutdown() {
         new ArrayList<>(channels).stream().forEach(AmqpChannel::shutdown);
         serviceQueue.shutdown();
+        channelFactory.shutdown();
     }
 
     @Override
@@ -65,7 +66,7 @@ public class AMQPMuonTransport implements MuonTransport {
     @Override
     public ChannelConnection<MuonOutboundMessage, MuonInboundMessage> openClientChannel(String serviceName, String protocol) {
 
-      log.info("Opening a channel ... {}", serviceName);
+      log.debug("Opening AMQPChannel to {} {}", serviceName, this);
         if (!discovery.getServiceNamed(serviceName)
                 .isPresent()) {
             throw new NoSuchServiceException(serviceName);

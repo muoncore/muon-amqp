@@ -29,6 +29,8 @@ public class RabbitMq09ClientAmqpConnection implements AmqpConnection {
 
     private List<Consumer<Channel>> execList = new ArrayList<>();
 
+    private boolean closed = false;
+
 
     public RabbitMq09ClientAmqpConnection(String rabbitUrl)
             throws IOException,
@@ -96,6 +98,7 @@ public class RabbitMq09ClientAmqpConnection implements AmqpConnection {
     }
 
     private void connectToAmqp(String rabbitUrl, ConnectionFactory factory) {
+        if (closed) return;
         new Thread(() -> {
             boolean reconnect = true;
             while (reconnect) {
@@ -111,7 +114,11 @@ public class RabbitMq09ClientAmqpConnection implements AmqpConnection {
                         });
 //                    }
                     connection.addShutdownListener(cause -> {
-                        log.error("AMQP Client connection has shut down, starting reconnect cycle");
+                        if (closed) {
+                            log.info("AMQP Client connection has closed down by request");
+                        } else {
+                            log.error("AMQP Client connection has shut down unexpectedly, starting reconnect cycle");
+                        }
                         try {
                             connection.close();
                         } catch (Exception e) {
@@ -187,11 +194,12 @@ public class RabbitMq09ClientAmqpConnection implements AmqpConnection {
 
     @Override
     public void close() {
+        closed = true;
         try {
-            if (channel.isOpen()) {
+            if (channel != null && channel.isOpen()) {
                 channel.close();
             }
-            if (connection.isOpen()) {
+            if (connection != null && connection.isOpen()) {
                 connection.close();
             }
         } catch (ShutdownSignalException ex) {

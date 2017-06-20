@@ -151,21 +151,24 @@ public class DefaultAmqpChannel implements AmqpChannel {
     @Override
     public void shutdown() {
         if (channelLive) {
-            log.info("Sending shutdown message to client side channel");
-            function.apply(MuonMessageBuilder.fromService(localServiceName)
-                    .step(TransportEvents.CONNECTION_FAILURE)
-                    .operation(MuonMessage.ChannelOperation.closed)
-                    .contentType("text/plain")
-                    .payload(new byte[0])
-                    .buildInbound());
+            if (function != null) {
+                function.apply(MuonMessageBuilder.fromService(localServiceName)
+                        .step(TransportEvents.CONNECTION_FAILURE)
+                        .operation(MuonMessage.ChannelOperation.closed)
+                        .contentType("text/plain")
+                        .payload(new byte[0])
+                        .buildInbound());
+            }
 //            function.apply(null);
             channelLive = false;
             try {
-                listener.cancel();
-                connection.deleteQueue(sendQueue);
-                connection.deleteQueue(receiveQueue);
+                if (listener != null) listener.cancel();
+                if (connection != null) {
+                    connection.deleteQueue(sendQueue);
+                    connection.deleteQueue(receiveQueue);
+                }
             } catch (Throwable e) {
-                log.error("Error cleaning up AMQP Channel {}", e.getMessage());
+                log.error("Error cleaning up AMQP Channel", e);
             }
         }
         if (onShutdown != null) {

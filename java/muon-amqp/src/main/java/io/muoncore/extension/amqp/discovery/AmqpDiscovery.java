@@ -9,6 +9,7 @@ import io.muoncore.extension.amqp.QueueListener;
 import io.muoncore.extension.amqp.QueueListenerFactory;
 import io.muoncore.extension.amqp.QueueMessageBuilder;
 import io.muoncore.transport.ServiceCache;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class AmqpDiscovery implements Discovery {
 
   private QueueListenerFactory queueListenerFactory;
@@ -62,6 +64,7 @@ public class AmqpDiscovery implements Discovery {
           Thread.sleep(4000);
           executedOnReady = true;
           if (onReady != null) {
+            log.debug("On Ready will now be called.");
             onReady.call();
           }
         } catch (Exception e) {

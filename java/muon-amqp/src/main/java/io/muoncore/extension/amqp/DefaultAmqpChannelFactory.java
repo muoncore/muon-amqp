@@ -28,9 +28,16 @@ public class DefaultAmqpChannelFactory implements AmqpChannelFactory {
     }
 
     @Override
+    public void shutdown() {
+        connection.close();
+    }
+
+    @Override
     public void initialiseEnvironment(Codecs codecs, Discovery discovery, Scheduler scheduler) {
         this.codecs = codecs;
         this.discovery = discovery;
         this.scheduler = scheduler;
     }
+
+
 }

@@ -7,4 +7,5 @@ import io.muoncore.codec.Codecs;
 public interface AmqpChannelFactory {
     void initialiseEnvironment(Codecs codecs, Discovery discovery, Scheduler scheduler);
     AmqpChannel createChannel();
+    void shutdown();
 }
