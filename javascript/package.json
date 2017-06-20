@@ -1,6 +1,6 @@
 {
   "name": "muon-amqp",
-  "version": "0.0.1-11",
+  "version": "0.0.1-17",
   "description": "",
   "main": "./distribution/amqp.js",
   "scripts": {
