@@ -1,7 +1,6 @@
 # Change Log
 
-## [Unreleased](https://github.com/muoncore/muon-amqp/tree/HEAD)
-
+## [v0.0.1](https://github.com/muoncore/muon-amqp/tree/v0.0.1) (2017-06-20)
 **Closed issues:**
 
 - Add an AMQP reconnect on failure [\#1](https://github.com/muoncore/muon-amqp/issues/1)
