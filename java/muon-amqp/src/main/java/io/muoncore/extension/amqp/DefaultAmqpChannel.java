@@ -190,7 +190,6 @@ public class DefaultAmqpChannel implements AmqpChannel {
 
         if (StandardAsyncChannel.echoOut) System.out.println(new Date() + ": Channel[ DefaultAMQPChannel >>>>> AMQP Wire]: Sending " + message);
         if (message != null) {
-            log.debug("Sending inbound channel message of type " + message.getProtocol() + "||" + message.getStep());
             dispatcher.dispatch(message, msg -> {
                 try {
                     connection.send(AmqpMessageTransformers.outboundToQueue(sendQueue, message, codecs, discovery));
