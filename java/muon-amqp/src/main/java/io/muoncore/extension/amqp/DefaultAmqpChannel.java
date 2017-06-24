@@ -125,7 +125,7 @@ public class DefaultAmqpChannel implements AmqpChannel {
                 return;
             }
             MuonInboundMessage inboundMessage = AmqpMessageTransformers.queueToInbound(msg, codecs);
-            log.debug("Received inbound channel message [" + receiveQueue + "] of type " + message.getProtocol() + ":" + inboundMessage.getStep());
+            log.trace("Received inbound channel message [" + receiveQueue + "] of type " + message.getProtocol() + ":" + inboundMessage.getStep());
             if (StandardAsyncChannel.echoOut) System.out.println(new Date() + ": Channel[ AMQP Wire >>>>> DefaultAMQPChannel]: Received " + inboundMessage);
             if (inboundMessage.getChannelOperation() == MuonMessage.ChannelOperation.closed) {
                 function.apply(null);
