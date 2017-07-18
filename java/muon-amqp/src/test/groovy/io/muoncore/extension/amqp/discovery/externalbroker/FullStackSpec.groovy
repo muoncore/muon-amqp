@@ -20,7 +20,7 @@ import spock.lang.IgnoreIf
 import spock.lang.Specification
 import spock.lang.Timeout
 
-@Ignore
+//@Ignore
 @Timeout(60)
 class FullStackSpec extends BaseEmbeddedBrokerSpec {
 
@@ -63,6 +63,36 @@ class FullStackSpec extends BaseEmbeddedBrokerSpec {
     svc4.shutdown()
     svc5.shutdown()
     svc6.shutdown()
+  }
+
+  def "will reconnect to broker after broker failure"() {
+
+    Environment.initializeIfEmpty()
+    StandardAsyncChannel.echoOut = true
+
+    def svc1 = createMuon("simples")
+    def svc2 = createMuon("tombola1")
+
+    when:
+    Thread.sleep(3500)
+
+    brokerStop()
+    sleep(1000)
+    brokerStart()
+
+    sleep(2000)
+
+    def services = svc1.discovery.serviceNames
+    def services2 = svc2.discovery.serviceNames
+
+    then:
+    services.size() > 0
+    services == services2
+
+    cleanup:
+    StandardAsyncChannel.echoOut = false
+    svc1.shutdown()
+    svc2.shutdown()
   }
 
   private Muon createMuon(serviceName) {
