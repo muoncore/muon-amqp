@@ -1,5 +1,13 @@
 # Change Log
 
+## [Unreleased](https://github.com/muoncore/muon-amqp/tree/HEAD)
+
+[Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.7...HEAD)
+
+**Closed issues:**
+
+- Error appears when broker is bounced [\#4](https://github.com/muoncore/muon-amqp/issues/4)
+
 ## [v0.0.7](https://github.com/muoncore/muon-amqp/tree/v0.0.7) (2017-06-24)
 [Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.6...v0.0.7)
 
