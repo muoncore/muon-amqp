@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/muoncore/muon-amqp/tree/HEAD)
-
-[Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.7...HEAD)
+## [v0.0.8](https://github.com/muoncore/muon-amqp/tree/v0.0.8) (2017-08-02)
+[Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.7...v0.0.8)
 
 **Closed issues:**
 
