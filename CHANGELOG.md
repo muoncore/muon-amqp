@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.0.9](https://github.com/muoncore/muon-amqp/tree/v0.0.9) (2017-09-01)
+[Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.8...v0.0.9)
+
+**Closed issues:**
+
+- Update to generate full pom for maven central [\#6](https://github.com/muoncore/muon-amqp/issues/6)
+
+**Merged pull requests:**
+
+- Update pom, migrate to 7.4 [\#7](https://github.com/muoncore/muon-amqp/pull/7) ([daviddawson](https://github.com/daviddawson))
+
 ## [v0.0.8](https://github.com/muoncore/muon-amqp/tree/v0.0.8) (2017-08-02)
 [Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.7...v0.0.8)
 
