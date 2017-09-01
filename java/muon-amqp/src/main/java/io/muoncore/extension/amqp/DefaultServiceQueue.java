@@ -32,6 +32,8 @@ public class DefaultServiceQueue implements ServiceQueue {
 
         listener = new RabbitMq09QueueListener(connection.getChannel(), "service." + serviceName, fun -> {
 
+            log.trace("Handshake received on service queue {}, will dispatch to {}", fun, fun);
+
             if (fun == null) return;
 
             AmqpHandshakeMessage handshake = new AmqpHandshakeMessage(
@@ -41,7 +43,7 @@ public class DefaultServiceQueue implements ServiceQueue {
 
             channelFunction.apply(handshake);
         }, () -> {
-
+            log.trace("Service queue is being cleanly shut down");
         });
 
         listener.start();

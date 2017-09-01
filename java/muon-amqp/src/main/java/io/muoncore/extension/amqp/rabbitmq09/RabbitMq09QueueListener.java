@@ -71,7 +71,7 @@ public class RabbitMq09QueueListener implements QueueListener {
                                 newHeaders.put(entry.getKey(), entry.getValue().toString());
                             });
 
-                            log.trace("Receiving message on " + queueName + " of type " + newHeaders.get("eventType"));
+                            log.trace("Receiving message on {} of type {} ", queueName, newHeaders);
 
                             listener.exec(new QueueListener.QueueMessage(queueName, body, newHeaders));
 

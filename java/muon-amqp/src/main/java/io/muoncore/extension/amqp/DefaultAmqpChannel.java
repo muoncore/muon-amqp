@@ -2,6 +2,7 @@ package io.muoncore.extension.amqp;
 
 import com.rabbitmq.client.AlreadyClosedException;
 import io.muoncore.Discovery;
+import io.muoncore.channel.Dispatcher;
 import io.muoncore.channel.impl.StandardAsyncChannel;
 import io.muoncore.channel.support.Scheduler;
 import io.muoncore.codec.Codecs;
@@ -14,7 +15,6 @@ import io.muoncore.message.MuonOutboundMessage;
 import io.muoncore.transport.TransportEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.Dispatcher;
 
 import java.io.IOException;
 import java.util.Date;
@@ -202,6 +202,7 @@ public class DefaultAmqpChannel implements AmqpChannel {
                 }
             }, Throwable::printStackTrace);
         } else {
+            log.trace("Channel Received a null, shutting down AMQP channel with {}", TransportEvents.CONNECTION_FAILURE, new RuntimeException());
             send(
                     MuonMessageBuilder.fromService(localServiceName)
                             .step(TransportEvents.CONNECTION_FAILURE)
