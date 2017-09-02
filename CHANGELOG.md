@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.0.10](https://github.com/muoncore/muon-amqp/tree/v0.0.10) (2017-09-02)
+[Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.9...v0.0.10)
+
+**Merged pull requests:**
+
+- Protocol extension [\#8](https://github.com/muoncore/muon-amqp/pull/8) ([daviddawson](https://github.com/daviddawson))
+
 ## [v0.0.9](https://github.com/muoncore/muon-amqp/tree/v0.0.9) (2017-09-01)
 [Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.8...v0.0.9)
 
