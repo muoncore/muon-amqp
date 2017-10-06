@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.0.11](https://github.com/muoncore/muon-amqp/tree/v0.0.11) (2017-10-06)
+[Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.10...v0.0.11)
+
+**Closed issues:**
+
+- A large number of parallel connections with no backpressure can cause resource exhaustion [\#5](https://github.com/muoncore/muon-amqp/issues/5)
+
 ## [v0.0.10](https://github.com/muoncore/muon-amqp/tree/v0.0.10) (2017-09-02)
 [Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.9...v0.0.10)
 
