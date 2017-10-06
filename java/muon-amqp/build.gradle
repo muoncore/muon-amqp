@@ -2,9 +2,8 @@
 description = 'AMQP Transport and Discovery for Muon Java'
 
 repositories {
-  mavenLocal()
   maven {
-    url "https://simplicityitself.artifactoryonline.com/simplicityitself/muon"
+    url "http://artifactory.cloud.daviddawson.me/artifactory/muon"
   }
 }
 
