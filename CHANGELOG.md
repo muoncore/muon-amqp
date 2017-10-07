@@ -1,5 +1,11 @@
 # Change Log
 
+## [v0.0.15](https://github.com/muoncore/muon-amqp/tree/v0.0.15) (2017-10-07)
+[Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.14...v0.0.15)
+
+## [v0.0.14](https://github.com/muoncore/muon-amqp/tree/v0.0.14) (2017-10-07)
+[Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.13...v0.0.14)
+
 ## [v0.0.13](https://github.com/muoncore/muon-amqp/tree/v0.0.13) (2017-10-06)
 [Full Changelog](https://github.com/muoncore/muon-amqp/compare/v0.0.12...v0.0.13)
 
